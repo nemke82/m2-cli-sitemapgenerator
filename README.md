@@ -12,7 +12,7 @@ OR
 Download ZIP archive and extract (example):
 wget -c https://github.com/nemke82/m2-cli-sitemapgenerator/archive/master.zip
 
-Once data uploaded to the app/etc/code/ directory run:
+Once data uploaded to the app/code/ directory run:
 - php bin/magento module:enable Neman_Generatesitemapxml
 - php bin/magento setup:upgrade
 - php bin/magento setup:di:compile
