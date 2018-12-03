@@ -1,0 +1,22 @@
+{
+    "name": "neman/module-generatesitemapxml",
+    "description": "",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "authors": [
+        {
+            "email": "ne@nemanja.io",
+            "name": "nemke82"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Neman\\Generatesitemapxml\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}
