@@ -1,4 +1,5 @@
 <?php
+
 namespace Neman\Generatesitemapxml\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -8,38 +9,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Magento\Framework\App\State;
 
-//use Magento\Framework\App\Bootstrap;
-//include('app/bootstrap.php');
-//$bootstrap = Bootstrap::create(BP, $_SERVER);
-
-$objectManager = \Magento\Framework\App\ObjectManager::getInstance(); // Instance of object manager
-$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
-$connection = $resource->getConnection();
-$tableName = $resource->getTableName('sitemap'); //gives table name with prefix
- 
-//Select Data from table
-$sql = "Select * FROM " . $tableName;
-$result = $connection->fetchAll($sql); // gives associated array, table fields as key in array.
-
-if (!$result)
-{
-$sql = "Insert Into " . $tableName . " VALUES (1,NULL,'sitemap.xml','/',NULL,1);";
-$connection->query($sql);
-
-echo "No sitemap records found. Default (sitemap.xml) added under docroot folder.";
-}
-
-else
-{
-echo "Has something. We will use data from Dashboard --> Marketing --> Sitemap area or sitemap SQL table.";
-}
-
 class Generatesitemapxml extends Command
 {
-
-    const NAME_ARGUMENT = "name";
-    const NAME_OPTION = "option";
-
     /**
      * Enable/disable configuration
      */
@@ -124,21 +95,14 @@ class Generatesitemapxml extends Command
         InputInterface $input,
         OutputInterface $output
     ) {
-
-
         $errors = [];
-
-        // check if Marketing --> Sitemap has any fields added
-        //$rows = mysql_result(mysql_query('SELECT COUNT(*) FROM sitemap'), 0);
-
-
         // check if scheduled generation enabled
         if (!$this->_scopeConfig->isSetFlag(
             self::XML_PATH_GENERATION_ENABLED,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         )
         ) {
-            $output->writeln('Sitemap generated at docroot. If Nginx please symlink it to pub/. No scheduled generation enabled still!!!');
+            $output->writeln('No generation scheduled');
         }
 
         $collection = $this->_collectionFactory->create();
@@ -197,10 +161,6 @@ class Generatesitemapxml extends Command
     {
         $this->setName("sitemap:generate");
         $this->setDescription("Generate xml sitemap");
-        $this->setDefinition([
-            new InputArgument(self::NAME_ARGUMENT, InputArgument::OPTIONAL, "Name"),
-            new InputOption(self::NAME_OPTION, "-a", InputOption::VALUE_NONE, "Option functionality")
-        ]);
         parent::configure();
     }
 }
